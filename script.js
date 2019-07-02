@@ -15,6 +15,17 @@ var paddleDx = 7;
 var rightPressed;
 var leftPressed;
 
+function doConfirm(msg, yesFn, noFn) {
+  var confirmBox = $("#confirmbox");
+  confirmBox.find(".message").text(msg);
+  confirmBox.find(".yes, .no").unbind().click(function () {
+    confirmBox.hide();
+  });
+  confirmBox.find(".yes").click(yesFn);
+  confirmBox.find(".no").click(noFn);
+  confirmBox.show();
+}
+
 function keyDownHandler(event) {
   if (event.keyCode == 39) {
     rightPressed = true;
@@ -64,6 +75,9 @@ function draw() {
       x + dx < paddleX + paddleWidth
     )) {
     dy = -dy;
+  } else if (y + dy > canvas.height) {
+    location.reload();
+
   }
 
   if (rightPressed && (paddleX + paddleWidth) < canvas.width) {
