@@ -31,6 +31,9 @@ function keyUpHandler(event) {
   }
 }
 
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
+
 function drawBall() {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -55,8 +58,18 @@ function draw() {
     dx = -dx;
   }
 
-  if (y + dy < ballRadius) {
+  if (y + dy < ballRadius || (
+      y + dy > canvas.height - paddleHeight - ballRadius &&
+      x + dx > paddleX &&
+      x + dx < paddleX + paddleWidth
+    )) {
     dy = -dy;
+  }
+
+  if (rightPressed && (paddleX + paddleWidth) < canvas.width) {
+    paddleX += paddleDx;
+  } else if (leftPressed && paddleX > 0) {
+    paddleX -= paddleDx;
   }
 
   x += dx;
